@@ -30,11 +30,10 @@ export class CustomerComponent implements OnInit {
   }
 
   populateData() {
-    this.customerFormGroup.setValue({
+    this.customerFormGroup.patchValue({
       firstName: 'Test',
       lastName: 'Test',
       email: 'abc@test.com',
-
     });
   }
 }
