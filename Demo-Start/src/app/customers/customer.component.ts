@@ -34,7 +34,7 @@ export class CustomerComponent implements OnInit {
       firstName: 'Test',
       lastName: 'Test',
       email: 'abc@test.com',
-      sendCatalog: true
+
     });
   }
 }
