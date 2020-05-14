@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup} from '@angular/forms';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 
 import {Customer} from './customer';
 
@@ -16,9 +16,9 @@ export class CustomerComponent implements OnInit {
 
   ngOnInit() {
     this.customerFormGroup = this.formBuilder.group({
-      firstName: [''],
-      lastName: [{value: '', disabled: false}],
-      email: [{value: 'ad@gmail.com', disabled: true}],
+      firstName: ['', [Validators.required, Validators.minLength(3)]],
+      lastName: ['', [Validators.required, Validators.maxLength(50)]],
+      email: ['', [Validators.required, Validators.email]],
       sendCatalog: {value: true},
     });
   }
