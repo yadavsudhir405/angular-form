@@ -17,7 +17,7 @@
                  type="text"
                  placeholder="First Name (required)"
                  formControlName="firstName"
-                 [ngClass]="{'is-invalid': (customerFormGroup.get('firstName').touched || customerFormGroup.get('firstName').dirty) && !customerFormGroup.get('firstName').valid }" />
+                 [ngClass]="{'is-invalid': (customerFormGroup.get('firstName').touched || customerFormGroup.get('firstName').dirty) && !customerFormGroup.get('firstName').valid }"/>
           <span class="invalid-feedback">
             <span *ngIf="customerFormGroup.get('firstName').errors?.required">
               Please enter your first name.
@@ -38,7 +38,7 @@
                  type="text"
                  placeholder="Last Name (required)"
                  formControlName="lastName"
-                 [ngClass]="{'is-invalid': (customerFormGroup.get('lastName').touched || customerFormGroup.get('lastName').dirty) && !customerFormGroup.get('lastName').valid }" />
+                 [ngClass]="{'is-invalid': (customerFormGroup.get('lastName').touched || customerFormGroup.get('lastName').dirty) && !customerFormGroup.get('lastName').valid }"/>
           <span class="invalid-feedback">
             <span *ngIf="customerFormGroup.get('lastName').errors?.required">
               Please enter your last name.
@@ -59,7 +59,7 @@
                  type="email"
                  placeholder="Email (required)"
                  formControlName="email"
-                 [ngClass]="{'is-invalid': (customerFormGroup.get('email').touched || customerFormGroup.get('email').dirty) && !customerFormGroup.get('email').valid }" />
+                 [ngClass]="{'is-invalid': (customerFormGroup.get('email').touched || customerFormGroup.get('email').dirty) && !customerFormGroup.get('email').valid }"/>
           <span class="invalid-feedback">
             <span *ngIf="customerFormGroup.get('email').errors?.required">
               Please enter your email address.
@@ -68,6 +68,51 @@
               Please enter a valid email address.
             </span>
           </span>
+        </div>
+      </div>
+
+      <div class="form-group row mb-2">
+        <label class="col-md-2 col-form-label"
+               for="phoneId">Phone</label>
+        <div class="col-md-8">
+          <input class="form-control"
+                 id="phoneId"
+                 type="tel"
+                 placeholder="Phone"
+                 formControlName="phone"
+                 [ngClass]="{'is-invalid': (customerFormGroup.get('phone').touched || customerFormGroup.get('phone').dirty) && !customerFormGroup.get('phone').valid }"/>
+          <span class="invalid-feedback">
+            <span *ngIf="customerFormGroup.get('phone').errors?.required">
+              Please enter your phone number.
+            </span>
+            <span *ngIf="customerFormGroup.get('phone').errors?.phone">
+              Please enter a valid Phone number.
+            </span>
+          </span>
+        </div>
+      </div>
+
+      <div class="form-group row mb-2">
+        <label class="col-md-2 col-form-label pt-0">Send Notifications</label>
+        <div class="col-md-8">
+          <div class="form-check form-check-inline" >
+            <label class="form-check-label">
+              <input class="form-check-input"
+                     type="radio"
+                     value="email"
+                     (click)="setNotifications('email')"
+                     formControlName="sendNotifications"> Email
+            </label>
+          </div>
+          <div class="form-check form-check-inline">
+            <label class="form-check-label">
+              <input class="form-check-input"
+                     type="radio"
+                     value="phone"
+                     (click)="setNotifications('phone')"
+                     formControlName="sendNotifications"> Phone
+            </label>
+          </div>
         </div>
       </div>
 
@@ -159,7 +204,8 @@
               <option value=""
                       disabled
                       selected
-                      hidden>Select a State...</option>
+                      hidden>Select a State...
+              </option>
               <option value="AL">Alabama</option>
               <option value="AK">Alaska</option>
               <option value="AZ">Arizona</option>
@@ -180,7 +226,7 @@
         </div>
       </div>
 
-      <div class="form-group row mb-2">
+      <div class="form-group row mb-4">
         <div class="offset-md-2 col-md-4">
           <button class="btn btn-primary mr-3"
                   type="submit"
@@ -189,10 +235,10 @@
                   [disabled]="!customerFormGroup.valid">
             Save
           </button>
-          <button class="btn btn-outline-secondary"
+          <button class="btn btn-outline-secondary mr-4"
                   (click)="populateData()"
                   type="submit"
-                  style="width:80px">
+                  style="width:100px">
             Test Data
           </button>
         </div>
