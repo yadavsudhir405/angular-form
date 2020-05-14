@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import {FormControl, FormGroup, NgForm} from '@angular/forms';
+import {Component, OnInit} from '@angular/core';
+import {FormBuilder, FormGroup} from '@angular/forms';
 
-import { Customer } from './customer';
+import {Customer} from './customer';
 
 @Component({
   selector: 'app-customer',
@@ -12,21 +12,20 @@ export class CustomerComponent implements OnInit {
   customerFormGroup: FormGroup;
   customer = new Customer();
 
-  constructor() {
-    this.customerFormGroup = new FormGroup({
-      firstName: new FormControl(),
-      lastName: new FormControl(),
-      email: new FormControl(),
-      sendCatalog: new FormControl(true)
+  constructor(private readonly formBuilder: FormBuilder) {}
+
+  ngOnInit() {
+    this.customerFormGroup = this.formBuilder.group({
+      firstName: '',
+      lastName: '',
+      email: '',
+      sendCatalog: true,
     });
   }
 
-  ngOnInit() {
-  }
-
   save() {
-    console.log(this.customer);
-    console.log('Saved: ' + JSON.stringify(this.customer));
+    console.log(this.customerFormGroup.value);
+    console.log('Saved: ' + JSON.stringify(this.customerFormGroup.value));
   }
 
   populateData() {
