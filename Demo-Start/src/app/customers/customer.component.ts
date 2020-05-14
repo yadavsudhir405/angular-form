@@ -3,6 +3,7 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 
 import {Customer} from './customer';
 import rangeValidator from './range-validator';
+import {emailMatcher} from './email-group-validator';
 
 @Component({
   selector: 'app-customer',
@@ -19,7 +20,10 @@ export class CustomerComponent implements OnInit {
     this.customerFormGroup = this.formBuilder.group({
       firstName: ['', [Validators.required, Validators.minLength(3)]],
       lastName: ['', [Validators.required, Validators.maxLength(50)]],
-      email: ['', [Validators.required, Validators.email]],
+      emailGroup: this.formBuilder.group({
+        email: ['', [Validators.required, Validators.email]],
+        confirmEmail: ['', [Validators.required]],
+      }, {validator: emailMatcher}),
       phone: '',
       rating: [null, [Validators.required, rangeValidator(1, 5)]],
       sendNotifications: 'email',
