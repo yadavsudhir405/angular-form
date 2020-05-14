@@ -24,8 +24,8 @@ export class CustomerComponent implements OnInit {
   ngOnInit() {
   }
 
-  save(customerForm: NgForm) {
-    console.log(customerForm.form);
-    console.log('Saved: ' + JSON.stringify(customerForm.value));
+  save() {
+    console.log(this.customer);
+    console.log('Saved: ' + JSON.stringify(this.customer));
   }
 }
