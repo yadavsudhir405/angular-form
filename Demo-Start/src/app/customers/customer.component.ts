@@ -1,9 +1,10 @@
 import {Component, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
 
 import {Customer} from './customer';
 import rangeValidator from './range-validator';
 import {emailMatcher} from './email-group-validator';
+import {debounce, debounceTime} from 'rxjs/operators';
 
 @Component({
   selector: 'app-customer',
@@ -13,6 +14,25 @@ import {emailMatcher} from './email-group-validator';
 export class CustomerComponent implements OnInit {
   customerFormGroup: FormGroup;
   customer = new Customer();
+  errorMsgs = {
+    firstName: '',
+    email: '',
+    confirmEmail: '',
+  };
+  private validationMessages = {
+    firstName: {
+      required: 'Please enter your first name',
+      minlength: 'The first name must be longer than 3 characters'
+    },
+    email: {
+      required: 'Please enter your email address.',
+      email: 'Please enter a valid email address.'
+    },
+    confirmEmail: {
+      required: 'Please enter your confirm email address',
+      match: 'Email doesnt match'
+    }
+  };
 
   constructor(private readonly formBuilder: FormBuilder) {}
 
@@ -29,6 +49,12 @@ export class CustomerComponent implements OnInit {
       sendNotifications: 'email',
       sendCatalog: {value: true},
     });
+    const firstNameControl =  this.customerFormGroup.get('firstName');
+    firstNameControl.valueChanges.pipe(
+      debounceTime(1000)
+    ).subscribe(value => {
+      this.setErrorMessage('firstName', firstNameControl);
+    });
 
     this.customerFormGroup.get('sendNotifications').valueChanges
       .subscribe(value => {
@@ -36,6 +62,14 @@ export class CustomerComponent implements OnInit {
       });
   }
 
+  setErrorMessage(field: string, formControl: AbstractControl) {
+    this.errorMsgs[field] = '';
+    if ((formControl.touched || formControl.dirty) && formControl.errors) {
+      this.errorMsgs[field] = Object.keys(formControl.errors)
+        .map(key => this.validationMessages[field][key]).join(' ');
+    }
+    console.log(this.errorMsgs[field]);
+  }
   save() {
     console.log(this.customerFormGroup.value);
     console.log('Saved: ' + JSON.stringify(this.customerFormGroup.value));

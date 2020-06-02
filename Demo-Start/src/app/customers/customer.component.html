@@ -17,14 +17,9 @@
                  type="text"
                  placeholder="First Name (required)"
                  formControlName="firstName"
-                 [ngClass]="{'is-invalid': (customerFormGroup.get('firstName').touched || customerFormGroup.get('firstName').dirty) && !customerFormGroup.get('firstName').valid }"/>
+                 [ngClass]="{'is-invalid': errorMsgs.firstName}"/>
           <span class="invalid-feedback">
-            <span *ngIf="customerFormGroup.get('firstName').errors?.required">
-              Please enter your first name.
-            </span>
-            <span *ngIf="customerFormGroup.get('firstName').errors?.minlength">
-              The first name must be longer than 3 characters.
-            </span>
+           {{errorMsgs.firstName}}
           </span>
         </div>
       </div>
