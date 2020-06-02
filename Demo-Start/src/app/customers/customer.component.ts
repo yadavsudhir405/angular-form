@@ -29,6 +29,11 @@ export class CustomerComponent implements OnInit {
       sendNotifications: 'email',
       sendCatalog: {value: true},
     });
+
+    this.customerFormGroup.get('sendNotifications').valueChanges
+      .subscribe(value => {
+        this.setNotifications(value);
+      });
   }
 
   save() {
@@ -46,7 +51,7 @@ export class CustomerComponent implements OnInit {
 
   setNotifications(notificationMedium: string) {
     const phoneControl = this.customerFormGroup.get('phone');
-    const emailControl = this.customerFormGroup.get('email');
+    const emailControl = this.customerFormGroup.get('emailGroup.email');
     if (notificationMedium === 'phone') {
       phoneControl.setValidators([Validators.required]);
       emailControl.clearValidators();
