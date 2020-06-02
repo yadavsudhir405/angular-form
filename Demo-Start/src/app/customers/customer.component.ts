@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {AbstractControl, FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
 
 import {Customer} from './customer';
 import rangeValidator from './range-validator';
@@ -38,17 +38,19 @@ export class CustomerComponent implements OnInit {
 
   ngOnInit() {
     this.customerFormGroup = this.formBuilder.group({
-      firstName: ['', [Validators.required, Validators.minLength(3)]],
-      lastName: ['', [Validators.required, Validators.maxLength(50)]],
-      emailGroup: this.formBuilder.group({
-        email: ['', [Validators.required, Validators.email]],
-        confirmEmail: ['', [Validators.required]],
-      }, {validator: emailMatcher}),
-      phone: '',
-      rating: [null, [Validators.required, rangeValidator(1, 5)]],
-      sendNotifications: 'email',
-      sendCatalog: {value: true},
-    });
+        firstName: ['', [Validators.required, Validators.minLength(3)]],
+        lastName: ['', [Validators.required, Validators.maxLength(50)]],
+        emailGroup: this.formBuilder.group({
+          email: ['', [Validators.required, Validators.email]],
+          confirmEmail: ['', [Validators.required]],
+        }, {validator: emailMatcher}),
+        phone: '',
+        rating: [null, [Validators.required, rangeValidator(1, 5)]],
+        sendNotifications: 'email',
+        sendCatalog: {value: true},
+        addresses: this.formBuilder.array([this.buildAddress()]),
+      }
+    );
     const firstNameControl =  this.customerFormGroup.get('firstName');
     firstNameControl.valueChanges.pipe(
       debounceTime(1000)
@@ -60,6 +62,25 @@ export class CustomerComponent implements OnInit {
       .subscribe(value => {
         this.setNotifications(value);
       });
+  }
+
+  buildAddress(): FormGroup {
+    return this.formBuilder.group({
+      addressType: '',
+      street1: '',
+      street2: '',
+      city: '',
+      state: '',
+      zip: '',
+    });
+  }
+
+  get addresses(): FormArray {
+    return this.customerFormGroup.get('addresses') as FormArray;
+  }
+
+  addAddress(): void {
+    this.addresses.push(this.buildAddress());
   }
 
   setErrorMessage(field: string, formControl: AbstractControl) {
